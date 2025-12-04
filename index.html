@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تسجيل الدخول - مخيم الهلال الجنوبي</title>
 
-  <!-- استدعاء خط Cairo من Google Fonts -->
+  <!-- استدعاء خط Cairo -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
@@ -102,52 +102,74 @@
       min-height:20px;
     }
 
-    /* شريط ألوان أسفل الصفحة */
+    /* شريط ألوان */
     .theme-bar {
-      position: fixed;
-      bottom: 0;
-      right: 0;
-      left: 0;
       background: rgba(0,0,0,0.85);
-      padding: 6px 10px;
+      padding: 8px 10px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 6px;
+      align-items: stretch;
+      gap: 8px;
       z-index: 999;
       direction: rtl;
+      font-size: 12px;
     }
 
     .theme-bar-title {
       color: #fff;
-      font-size: 12px;
+      text-align: center;
     }
 
     .color-controls {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: 6px;
-      justify-content: center;
     }
 
-    .color-controls label {
+    .color-row {
       display: flex;
       align-items: center;
-      gap: 4px;
-      font-size: 11px;
+      gap: 8px;
       color: #fff;
-      background: rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.08);
       padding: 4px 8px;
       border-radius: 999px;
     }
 
-    .color-controls input[type="color"] {
-      width: 24px;
-      height: 24px;
-      border: none;
-      padding: 0;
-      background: transparent;
-      cursor: pointer;
+    .color-row span.label {
+      white-space: nowrap;
+    }
+
+    .color-row input[type="range"] {
+      flex: 1;
+    }
+
+    .color-swatch {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1px solid #fff;
+      flex-shrink: 0;
+    }
+
+    /* على الشاشات الكبيرة يكون ثابت أسفل */
+    @media (min-width: 601px) {
+      .theme-bar {
+        position: fixed;
+        right: 0;
+        left: 0;
+        bottom: 0;
+      }
+      .box {
+        margin-bottom: 110px;
+      }
+    }
+
+    /* على الجوال يكون عادي داخل الصفحة (بدون مشاكل بوب أب) */
+    @media (max-width: 600px) {
+      .box {
+        margin: 20px auto 20px;
+      }
     }
   </style>
 </head>
@@ -173,30 +195,40 @@
     </div>
   </div>
 
-  <!-- شريط التحكم في ألوان الموقع -->
+  <!-- شريط الألوان -->
   <div class="theme-bar">
-    <span class="theme-bar-title">🎨 غيّر الألوان ثم اضغط نسخ لإرسالها:</span>
+    <div class="theme-bar-title">🎨 غيّر الألوان من السلايدر ثم اضغط نسخ لإرسالها لك:</div>
 
     <div class="color-controls">
-      <label>خلفية الصفحة
-        <input type="color" data-var="--page-bg" value="#B78C5A">
-      </label>
+      <div class="color-row" data-var="--page-bg" data-s="45" data-l="70">
+        <span class="label">خلفية الصفحة</span>
+        <input type="range" min="0" max="360" value="30">
+        <span class="color-swatch"></span>
+      </div>
 
-      <label>خلفية الصندوق
-        <input type="color" data-var="--dark" value="#2F2F2F">
-      </label>
+      <div class="color-row" data-var="--dark" data-s="20" data-l="18">
+        <span class="label">خلفية الصندوق</span>
+        <input type="range" min="0" max="360" value="120">
+        <span class="color-swatch"></span>
+      </div>
 
-      <label>لون أساسي (زر)
-        <input type="color" data-var="--green" value="#B8DFAF">
-      </label>
+      <div class="color-row" data-var="--green" data-s="35" data-l="72">
+        <span class="label">اللون الأساسي</span>
+        <input type="range" min="0" max="360" value="100">
+        <span class="color-swatch"></span>
+      </div>
 
-      <label>لون نص الزر
-        <input type="color" data-var="--brown" value="#7A5330">
-      </label>
+      <div class="color-row" data-var="--brown" data-s="45" data-l="35">
+        <span class="label">لون نص الزر</span>
+        <input type="range" min="0" max="360" value="30">
+        <span class="color-swatch"></span>
+      </div>
 
-      <label>نص ثانوي
-        <input type="color" data-var="--soft" value="#D9EBD4">
-      </label>
+      <div class="color-row" data-var="--soft" data-s="30" data-l="85">
+        <span class="label">لون ثانوي</span>
+        <input type="range" min="0" max="360" value="90">
+        <span class="color-swatch"></span>
+      </div>
     </div>
 
     <button id="copyColorsBtn" style="
@@ -220,31 +252,42 @@
         msgEl.textContent = 'الرجاء ملء جميع الحقول.';
         return;
       }
-
       msgEl.textContent = '';
-
-      const params = new URLSearchParams({
-        national_id: nid,
-        phone: phone
-      });
-
+      const params = new URLSearchParams({ national_id: nid, phone: phone });
       window.location.href = 'result.html?' + params.toString() + '&v=' + Date.now();
     });
 
+    // دالة تحديث لون واحد من السطر
+    function updateColorRow(row) {
+      const varName = row.dataset.var;
+      const s = row.dataset.s;
+      const l = row.dataset.l;
+      const range = row.querySelector('input[type="range"]');
+      const h = range.value;
+      const color = `hsl(${h}, ${s}%, ${l}%)`;
 
-    // تحكم الألوان
-    document.querySelectorAll('.color-controls input[type="color"]').forEach(input => {
-      input.addEventListener('input', () => {
-        document.documentElement.style.setProperty(input.dataset.var, input.value);
-      });
+      document.documentElement.style.setProperty(varName, color);
+      const swatch = row.querySelector('.color-swatch');
+      swatch.style.background = color;
+    }
+
+    // تهيئة السطور عند التحميل + إضافة المستمعين
+    document.querySelectorAll('.color-row').forEach(row => {
+      const range = row.querySelector('input[type="range"]');
+      // أول تحديث
+      updateColorRow(row);
+      // تحديث مباشر عند تحريك السلايدر
+      range.addEventListener('input', () => updateColorRow(row));
     });
 
-    // نسخ الألوان المعتمدة
+    // نسخ الألوان
     document.getElementById("copyColorsBtn").addEventListener("click", () => {
       const style = getComputedStyle(document.documentElement);
       const vars = ["--page-bg","--dark","--green","--brown","--soft"];
       let text = "🎨 الألوان المعتمدة:\n\n";
-      vars.forEach(v => text += `${v}: ${style.getPropertyValue(v).trim()}\n`);
+      vars.forEach(v => {
+        text += `${v}: ${style.getPropertyValue(v).trim()}\n`;
+      });
       navigator.clipboard.writeText(text).then(() => {
         alert("تم نسخ الألوان! يمكنك لصقها وإرسالها 👍");
       });
