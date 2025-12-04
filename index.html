@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-head>
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تسجيل الدخول - مخيم الهلال الجنوبي</title>
 
-  <!-- استدعاء خط Cairo -->
+  <!-- استدعاء خط Cairo من Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
@@ -102,8 +102,12 @@ head>
       min-height:20px;
     }
 
-    /* شريط ألوان */
+    /* شريط ألوان أسفل الصفحة */
     .theme-bar {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      left: 0;
       background: rgba(0,0,0,0.85);
       padding: 6px 10px;
       display: flex;
@@ -145,17 +149,6 @@ head>
       background: transparent;
       cursor: pointer;
     }
-
-    /* على الشاشات الكبيرة يكون ثابت */
-    @media (min-width: 601px) {
-      .theme-bar {
-        position: fixed;
-        right: 0;
-        left: 0;
-        bottom: 0;
-      }
-      .box { margin-bottom: 100px; }
-    }
   </style>
 </head>
 <body>
@@ -180,8 +173,7 @@ head>
     </div>
   </div>
 
-
-  <!-- شريط الألوان -->
+  <!-- شريط التحكم في ألوان الموقع -->
   <div class="theme-bar">
     <span class="theme-bar-title">🎨 غيّر الألوان ثم اضغط نسخ لإرسالها:</span>
 
@@ -189,16 +181,20 @@ head>
       <label>خلفية الصفحة
         <input type="color" data-var="--page-bg" value="#B78C5A">
       </label>
+
       <label>خلفية الصندوق
         <input type="color" data-var="--dark" value="#2F2F2F">
       </label>
-      <label>لون أساسي
+
+      <label>لون أساسي (زر)
         <input type="color" data-var="--green" value="#B8DFAF">
       </label>
+
       <label>لون نص الزر
         <input type="color" data-var="--brown" value="#7A5330">
       </label>
-      <label>لون ثانوي
+
+      <label>نص ثانوي
         <input type="color" data-var="--soft" value="#D9EBD4">
       </label>
     </div>
@@ -212,9 +208,7 @@ head>
     </button>
   </div>
 
-
   <script>
-
     // تسجيل الدخول
     document.getElementById('loginForm').addEventListener('submit', function(e) {
       e.preventDefault();
@@ -226,19 +220,26 @@ head>
         msgEl.textContent = 'الرجاء ملء جميع الحقول.';
         return;
       }
+
       msgEl.textContent = '';
-      const params = new URLSearchParams({national_id: nid,phone: phone});
+
+      const params = new URLSearchParams({
+        national_id: nid,
+        phone: phone
+      });
+
       window.location.href = 'result.html?' + params.toString() + '&v=' + Date.now();
     });
 
-    // تغيير الألوان
+
+    // تحكم الألوان
     document.querySelectorAll('.color-controls input[type="color"]').forEach(input => {
       input.addEventListener('input', () => {
         document.documentElement.style.setProperty(input.dataset.var, input.value);
       });
     });
 
-    // نسخ الألوان
+    // نسخ الألوان المعتمدة
     document.getElementById("copyColorsBtn").addEventListener("click", () => {
       const style = getComputedStyle(document.documentElement);
       const vars = ["--page-bg","--dark","--green","--brown","--soft"];
@@ -248,7 +249,6 @@ head>
         alert("تم نسخ الألوان! يمكنك لصقها وإرسالها 👍");
       });
     });
-
   </script>
 
 </body>
