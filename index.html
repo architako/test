@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل الدخول - مخيم الهلال الجنوبي</title>
+
+  <!-- استدعاء خط Cairo من Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --green:   #B8DFAF;  /* لون الزر والإطارات */
+      --brown:   #7A5330;  /* لون نص الزر */
+      --dark:    #2F2F2F;  /* خلفية الصندوق */
+      --light:   #FFFFFF;  /* النص الفاتح */
+      --soft:    #D9EBD4;  /* نص ثانوي */
+      --page-bg: #B78C5A;  /* خلفية الصفحة العامة */
+    }
+
+    body {
+      font-family: "Cairo", Tahoma, Arial, sans-serif;
+      background: var(--page-bg);
+      margin:0;
+      padding:0;
+      text-align:center;
+      color: var(--light);
+    }
+
+    .box {
+      margin:40px auto 80px; /* ترك مساحة تحت للشريط */
+      background: var(--dark);
+      padding:25px;
+      border-radius:15px;
+      width:92%;
+      max-width:420px;
+      border:3px solid var(--green);
+      box-sizing: border-box;
+    }
+
+    .logo {
+      width:140px;
+      margin-bottom:15px;
+    }
+
+    h3 {
+      margin-top:0;
+      color: var(--green);
+      font-size:22px;
+      font-weight:700;
+    }
+
+    p {
+      font-size:14px;
+      color: var(--soft);
+      margin-bottom:20px;
+    }
+
+    input {
+      width:100%;
+      padding:12px;
+      margin:8px 0;
+      border-radius:8px;
+      border:1px solid var(--green);
+      background:#444;
+      color:#fff;
+      font-size:14px;
+      box-sizing:border-box;
+    }
+
+    button {
+      width:100%;
+      padding:12px;
+      background: var(--green);
+      color: var(--brown);
+      font-weight:700;
+      border:none;
+      border-radius:25px;
+      cursor:pointer;
+      margin-top:10px;
+      font-size:16px;
+    }
+
+    button:hover {
+      background: var(--soft);
+    }
+
+    .links a {
+      display:block;
+      margin:6px 0;
+      color: var(--green);
+      font-size:14px;
+      text-decoration:none;
+    }
+
+    .msg {
+      margin-top:10px;
+      font-size:13px;
+      color:#f8d7da;
+      min-height:20px;
+    }
+
+    /* شريط ألوان أسفل الصفحة */
+    .theme-bar {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 6px 10px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      z-index: 999;
+      direction: rtl;
+    }
+
+    .theme-bar-title {
+      color: #fff;
+      font-size: 12px;
+      margin: 0 4px;
+      white-space: nowrap;
+    }
+
+    .color-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+    }
+
+    .color-controls label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 4px 8px;
+      border-radius: 999px;
+    }
+
+    .color-controls input[type="color"] {
+      width: 24px;
+      height: 24px;
+      border: none;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    @media (max-width: 480px) {
+      .box {
+        margin:20px auto 90px;
+        padding:20px;
+      }
+      h3 { font-size:20px; }
+      p  { font-size:13px; }
+      button { font-size:15px; }
+      .theme-bar-title {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <!-- الشعار -->
+    <img src="LOGO.png" class="logo" alt="مخيم الهلال الجنوبي">
+
+    <h3>تسجيل الدخول</h3>
+    <p>أدخل رقم الهوية وآخر 4 أرقام من الجوال للتحقق من بياناتك.</p>
+
+    <form id="loginForm">
+      <input type="text" id="nid" placeholder="رقم الهوية" required>
+      <input type="password" id="phone" placeholder="آخر 4 أرقام من الجوال" maxlength="4" inputmode="numeric" required>
+      <button type="submit">دخول</button>
+    </form>
+
+    <div class="msg" id="msg"></div>
+
+    <div class="links">
+      <a href="https://chat.whatsapp.com/BfQOvIDoivYCkicUiVSv8F" target="_blank">قروب الواتساب</a>
+      <a href="https://www.facebook.com/SHC.Canaan" target="_blank">صفحة الفيس بوك</a>
+    </div>
+  </div>
+
+  <!-- شريط التحكم في ألوان الموقع -->
+  <div class="theme-bar">
+    <span class="theme-bar-title">🎨 تغيير ألوان الموقع:</span>
+    <div class="color-controls">
+      <label>
+        خلفية الصفحة
+        <input type="color" data-var="--page-bg" value="#B78C5A">
+      </label>
+      <label>
+        خلفية الصندوق
+        <input type="color" data-var="--dark" value="#2F2F2F">
+      </label>
+      <label>
+        لون أساسي (أخضر)
+        <input type="color" data-var="--green" value="#B8DFAF">
+      </label>
+      <label>
+        لون النص داخل الزر
+        <input type="color" data-var="--brown" value="#7A5330">
+      </label>
+      <label>
+        لون نص ثانوي
+        <input type="color" data-var="--soft" value="#D9EBD4">
+      </label>
+    </div>
+  </div>
+
+  <script>
+    // فورم تسجيل الدخول
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const nid   = document.getElementById('nid').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const msgEl = document.getElementById('msg');
+
+      if (!nid || !phone) {
+        msgEl.textContent = 'الرجاء ملء جميع الحقول.';
+        return;
+      }
+
+      msgEl.textContent = '';
+
+      const params = new URLSearchParams({
+        national_id: nid,
+        phone: phone
+      });
+
+      // إضافة v لتقليل مشكلة الكاش
+      window.location.href = 'result.html?' + params.toString() + '&v=' + Date.now();
+    });
+
+    // تغيير ألوان الموقع من شريط الألوان
+    const colorInputs = document.querySelectorAll('.color-controls input[type="color"]');
+
+    colorInputs.forEach(input => {
+      input.addEventListener('input', () => {
+        const varName = input.dataset.var;
+        const value   = input.value;
+        if (varName) {
+          document.documentElement.style.setProperty(varName, value);
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
